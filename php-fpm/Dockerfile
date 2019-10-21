@@ -606,18 +606,18 @@ RUN if [ ${INSTALL_IMAP} = true ]; then \
 
 ###########################################################################
 # Kafka:
-###########################################################################
+##########################################################################
+RUN apt-get install -y git
 RUN git clone https://github.com/edenhill/librdkafka.git /tmp/kafka && \
-    ( \
-        cd /tmp/kafka && \
-        ./configure && \
-        make && \
-        make install \
-    ) && \
-    rm -r /tmp/kafka && \
-    pecl install rdkafka && \
-    echo "extension=rdkafka.so" >> /etc/php/${PHP_VERSION}/mods-available/rdkafka.ini && \
-    ln -s /etc/php/${PHP_VERSION}/mods-available/rdkafka.ini /etc/php/${PHP_VERSION}/cli/conf.d/30-rdkafka.ini
+   ( \
+       cd /tmp/kafka && \
+       ./configure && \
+       make && \
+       make install \
+   ) && \
+   rm -r /tmp/kafka && \
+   pecl install rdkafka && \
+   docker-php-ext-enable rdkafka
 
 ###########################################################################
 # Calendar:
