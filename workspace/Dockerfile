@@ -1003,6 +1003,22 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     && apt-get -y install postgresql-client-10 \
 ;fi
 
+
+###########################################################################
+# Kafka:
+###########################################################################
+RUN git clone https://github.com/edenhill/librdkafka.git /tmp/kafka && \
+    ( \
+        cd /tmp/kafka && \
+        ./configure && \
+        make && \
+        make install \
+    ) && \
+    rm -r /tmp/kafka && \
+    pecl install rdkafka && \
+    echo "extension=rdkafka.so" >> /etc/php/${PHP_VERSION}/mods-available/rdkafka.ini && \
+    ln -s /etc/php/${PHP_VERSION}/mods-available/rdkafka.ini /etc/php/${PHP_VERSION}/cli/conf.d/30-rdkafka.ini
+
 ###########################################################################
 # Dusk Dependencies:
 ###########################################################################
