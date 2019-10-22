@@ -1,2 +1,3 @@
 *.conf
+!account.conf
 !default.conf
